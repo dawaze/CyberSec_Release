@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | Scan History</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .history-hero {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .history-title {
+            font-size: 42px;
+            color: #3ddc97;
+            margin-bottom: 8px;
+        }
+
+        .history-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .history-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        .scan-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .scan-select {
+            padding: 12px 16px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #3ddc97;
+            border-radius: 8px;
+            color: #e6f1ff;
+            min-width: 300px;
+            max-width: 500px;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #e55a5a;
+        }
+
+        .delete-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .terminal {
+            background: #0a0f12;
+            border: 1px solid #3ddc97;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #00ff9d;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .no-history {
+            text-align: center;
+            font-size: 18px;
+            opacity: 0.7;
+            padding: 60px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .scan-selector {
+                flex-direction: column;
+            }
+            .scan-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+        <div class="nav-buttons">
+            <span style="margin-right: 20px; opacity: 0.9; color: #3ddc97;">
+                {{ current_user.login }}
+            </span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+        </div>
+    </header>
+
+    <main class="history-hero">
+        <h1 class="history-title">Scan History</h1>
+        <p class="history-subtitle">Your past network scans and results</p>
+    </main>
+
+    <section class="history-section">
+        {% if scan_history %}
+            <div class="scan-selector">
+                <select class="scan-select" id="scan-select">
+                    <option value="">Select a scan to view</option>
+                    {% for item in scan_history %}
+                        <option value="{{ loop.index0 }}" data-id="{{ item.id }}">
+                            {{ item.date }} - Target: {{ item.target }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <button id="delete-btn" class="delete-btn" style="display: none;">Delete Selected Scan</button>
+            </div>
+
+            <div class="terminal" id="terminal">
+                <p style="opacity: 0.7; text-align: center; margin: 100px 0;">
+                    Select a scan from the dropdown above to view details
+                </p>
+            </div>
+        {% else %}
+            <p class="no-history">No scan history yet</p>
+        {% endif %}
+    </section>
+
+    <footer class="footer">
+        <p>© 2026 CyberSec — Platform for learning and cybersecurity analysis</p>
+    </footer>
+
+    <script>
+        const select = document.getElementById('scan-select');
+        const terminal = document.getElementById('terminal');
+        const deleteBtn = document.getElementById('delete-btn');
+
+        const scanData = {{ scan_history | tojson }};
+
+        select.addEventListener('change', function() {
+            const index = this.value;
+            if (index === "") {
+                terminal.innerHTML = '<p style="opacity: 0.7; text-align: center; margin: 100px 0;">Select a scan from the dropdown above to view details</p>';
+                deleteBtn.style.display = 'none';
+                return;
+            }
+
+            const item = scanData[index];
+            terminal.innerHTML = `
+                <div class="history-header">
+                    <strong>Target:</strong> ${item.target}
+                    <span>${item.date}</span>
+                </div>
+                <div class="history-result">${item.result}</div>
+            `;
+            deleteBtn.style.display = 'inline-block';
+            deleteBtn.dataset.id = item.id;
+        });
+
+    deleteBtn.addEventListener('click', function() {
+        if (!confirm("Are you sure you want to delete this scan?")) return;
+
+        const scanId = this.dataset.id;
+
+        fetch('/account/scan', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ scan_id: scanId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Scan deleted successfully");
+                location.reload();
+            } else {
+                alert("Error: " + (data.error || "Unknown error"));
+            }
+        })
+        .catch(err => alert("Connection error: " + err.message));
+    });
+    </script>
+
+</body>
+</html>

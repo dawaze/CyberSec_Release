@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>CyberSec Platform</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+    {% if current_user.is_authenticated %}
+    <div class="nav-buttons">
+        <div class="nav-buttons">
+                <span style="margin-right: 20px; opacity: 0.9; color: #3ddc97;">
+                    {{ current_user.login }}
+                </span>
+            <a href="{{ url_for("logout") }}" class ="btn btn-outline"> Logout </a>
+        </div>
+    </div>
+    {% else %}
+        <div class="nav-buttons">
+            <a href="{{ url_for("reg") }}" class="btn btn-outline">Register</a>
+            <a href="{{ url_for("login") }}" class="btn btn-primary">Log in</a>        
+        </div>
+    {% endif %}
+</header>
+
+
+<main class="hero">
+    {% if current_user.is_authenticated %}
+    <div class="hero-text">
+        <h1>Panel of <br> cybersecurity</h1>
+        <p class="tagline">
+            Analyze.<br>
+            Understand.<br>
+            Protect.
+        </p>
+        <p class="description">
+            Web-platform for testing, analysis and studying in cybersecurity.
+        </p>
+    </div>
+    {% else %}
+        <div style="text-align: center; padding: 120px 40px; max-width: 800px; margin: 0 auto;">
+            <h1 style="font-size: 52px; margin-bottom: 20px; color: #3ddc97;">
+                CyberSec
+            </h1>
+            <p class="tagline" style="font-size: 28px; margin-bottom: 30px;">
+                Analyze. Understand. Protect.
+            </p>
+            <p class="description" style="font-size: 18px; opacity: 0.9; max-width: 700px; margin: 0 auto;">
+                Web-platform for testing, analysis and studying in cybersecurity.
+            </p>
+        </div>
+    {% endif %}
+</main>
+
+<section class="cards">
+    {% if current_user.is_admin %}
+    <a href={{ url_for('admin') }} class="card">
+        <h3>Admin panel</h3>
+        <p>For managing users</p>
+    </a>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+    <a href={{ url_for('scan') }} class="card">
+        <h3>Web scan</h3>
+        <p>Аnalyze host using nmap</p>
+    </a>
+    <a href={{ url_for('crypto') }} class="card" class="card">
+        <h3>Cryptography</h3>
+        <p>Hashes and encryption</p>
+    </a>
+    <a href="{{ url_for('social_engineering') }}" class="card" class="card">
+        <h3>Social engineering</h3>
+        <p>Examples of attack and protect</p>
+    </a>
+    <a href={{ url_for('ai_assistant') }} class="card" class="card">
+        <h3>AI Assistant</h3>
+        <p>Reccomendations</p>
+    </a>
+        <a href={{ url_for('dirsearch') }} class="card" class="card">
+        <h3>Dirsearch</h3>
+        <p>For fuzzing</p>
+    </a>
+    <a href={{ url_for('account') }} class="card">
+        <h3>Account</h3>
+        <p>History</p>
+    </a>
+    {% endif %}
+</section>
+
+<footer class="footer">
+    <p>© 2026 CyberSec</p>
+</footer>
+
+</body>
+</html>

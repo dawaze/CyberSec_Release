@@ -1,0 +1,60 @@
+# Dirsearch started Tue Feb 10 03:56:28 2026 as: /Library/Frameworks/Python.framework/Versions/3.11/bin/dirsearch -u zero.webappsecurity.com -t 20 --no-color
+
+400   226B   http://zero.webappsecurity.com/\..\..\..\..\..\..\..\..\..\etc\passwd
+302     0B   http://zero.webappsecurity.com/;/admin    -> REDIRECTS TO: /;/admin/
+400     0B   http://zero.webappsecurity.com/a%5c.aspx
+500    15KB  http://zero.webappsecurity.com/account/login.html
+500    15KB  http://zero.webappsecurity.com/account/
+200     6KB  http://zero.webappsecurity.com/admin%20/
+302     0B   http://zero.webappsecurity.com/admin    -> REDIRECTS TO: /admin/
+200     6KB  http://zero.webappsecurity.com/admin/%3bindex/
+200     6KB  http://zero.webappsecurity.com/admin/
+200     6KB  http://zero.webappsecurity.com/admin/index.html
+200     6KB  http://zero.webappsecurity.com/admin;/
+403   961B   http://zero.webappsecurity.com/backup/
+302     0B   http://zero.webappsecurity.com/Bank/    -> REDIRECTS TO: http://zero.webappsecurity.com/login.html
+302     0B   http://zero.webappsecurity.com/cgi-bin    -> REDIRECTS TO: /cgi-bin/
+403   961B   http://zero.webappsecurity.com/cgi-bin/
+403   961B   http://zero.webappsecurity.com/db/
+200    27KB  http://zero.webappsecurity.com/debug.txt
+200    19KB  http://zero.webappsecurity.com/docs/
+302     0B   http://zero.webappsecurity.com/docs    -> REDIRECTS TO: /docs/
+302     0B   http://zero.webappsecurity.com/errors    -> REDIRECTS TO: /errors/
+200     1KB  http://zero.webappsecurity.com/errors/
+200    21KB  http://zero.webappsecurity.com/errors/errors.log
+200     8KB  http://zero.webappsecurity.com/faq.html
+200     9KB  http://zero.webappsecurity.com/feedback.html
+302     0B   http://zero.webappsecurity.com/help    -> REDIRECTS TO: /help/
+302     0B   http://zero.webappsecurity.com/include    -> REDIRECTS TO: /include/
+403   961B   http://zero.webappsecurity.com/include/
+200     4KB  http://zero.webappsecurity.com/index.old
+200     7KB  http://zero.webappsecurity.com/login.html
+302     0B   http://zero.webappsecurity.com/logout.html    -> REDIRECTS TO: /index.html
+302     0B   http://zero.webappsecurity.com/manager    -> REDIRECTS TO: /manager/
+302     0B   http://zero.webappsecurity.com/manager/    -> REDIRECTS TO: /manager/html
+401     2KB  http://zero.webappsecurity.com/manager/jmxproxy
+401     2KB  http://zero.webappsecurity.com/manager/jmxproxy/?qry=STUFF
+404     2KB  http://zero.webappsecurity.com/manager/login
+401     2KB  http://zero.webappsecurity.com/manager/status/all
+404     2KB  http://zero.webappsecurity.com/manager/VERSION
+401     2KB  http://zero.webappsecurity.com/manager/jmxproxy/?get=BEANNAME&att=MYATTRIBUTE&key=MYKEY
+401     2KB  http://zero.webappsecurity.com/manager/html/
+401     2KB  http://zero.webappsecurity.com/manager/jmxproxy/?get=java.lang:type=Memory&att=HeapMemoryUsage
+401     2KB  http://zero.webappsecurity.com/manager/html
+401     2KB  http://zero.webappsecurity.com/manager/jmxproxy/?invoke=Catalina%3Atype%3DService&op=findConnectors&ps=
+401     2KB  http://zero.webappsecurity.com/manager/jmxproxy/?set=BEANNAME&att=MYATTRIBUTE&val=NEWVALUE
+404     2KB  http://zero.webappsecurity.com/manager/login.asp
+401     2KB  http://zero.webappsecurity.com/manager/jmxproxy/?invoke=BEANNAME&op=METHODNAME&ps=COMMASEPARATEDPARAMETERS
+404     2KB  http://zero.webappsecurity.com/manager/admin.asp
+200     1KB  http://zero.webappsecurity.com/ReadMe.txt
+200     1KB  http://zero.webappsecurity.com/readme.txt
+200     1KB  http://zero.webappsecurity.com/README.txt
+200     1KB  http://zero.webappsecurity.com/Readme.txt
+302     0B   http://zero.webappsecurity.com/resources    -> REDIRECTS TO: /resources/
+403   961B   http://zero.webappsecurity.com/scripts/
+400     1KB  http://zero.webappsecurity.com/search.html
+200     5KB  http://zero.webappsecurity.com/server-status
+302     0B   http://zero.webappsecurity.com/signin.html    -> REDIRECTS TO: /login.html?login_error=true
+403   961B   http://zero.webappsecurity.com/stats/
+403   961B   http://zero.webappsecurity.com/user/
+500    13KB  http://zero.webappsecurity.com/user/login.html

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>CyberSec | Авторизация</title>
+    <link rel="stylesheet" href="/static/auth.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <h2>Вход в систему</h2>
+        <p class="subtitle">Secure Access Panel</p>
+        {% for cat, msg in get_flashed_messages(with_categories=True) %}
+            <div class="flash {{cat}}">{{msg}}</div>
+        {% endfor %}
+        <form method="post" action="/login">
+            {{form.hidden_tag() }}
+            <div class="field">{{ form.login.label() }} {{ form.login() }}</div>
+            <div class="field">{{ form.psw.label() }} {{ form.psw() }}
+                {% for error in form.psw.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+
+            <div class="field"> {{ form.submit() }}</div>
+        </form>
+
+        <div class="switch">
+            Нет аккаунта? <a href="{{ url_for('reg') }}">Регистрация</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

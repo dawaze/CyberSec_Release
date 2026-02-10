@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | Registration is complete! </title>
+    <link rel="stylesheet" href="/static/style.css"> 
+</head>
+<body>
+
+    <div class="hero" style="padding: 60px 40px; text-align: center;">
+        <div class="auth-container" style="max-width: 600px; margin: 0 auto;">
+            <div class="auth-card" style="padding: 50px 40px;">
+                <h1 style="font-size: 36px; color: #3ddc97; margin-bottom: 20px;">
+                    Registration is complete!
+                </h1>
+                
+                <p style="font-size: 18px; line-height: 1.6; margin-bottom: 40px;">
+                    Your account is created!<br>
+                    Now you can log in you account and use tools for cybersecurity
+                </p>
+
+                <a href="{{ url_for('login') }}" class="btn btn-primary" style="font-size: 18px; padding: 16px 60px; margin-bottom: 30px;">
+                    Log in account
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 CyberSec</p>
+    </footer>
+
+</body>
+</html>

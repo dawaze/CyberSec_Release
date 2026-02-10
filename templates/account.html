@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | Account</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* Additional styles for account page */
+        .account-hero {
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .account-title {
+            font-size: 42px;
+            color: #3ddc97;
+            margin-bottom: 10px;
+        }
+
+        .account-subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 60px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(61, 220, 151, 0.25);
+            border-radius: 14px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 60px rgba(61, 220, 151, 0.3);
+        }
+
+        .tool-icon {
+            font-size: 48px;
+            color: #3ddc97;
+            margin-bottom: 20px;
+        }
+
+        .tool-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .tool-desc {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+
+        <div class="nav-buttons">
+            <span style="margin-right: 20px; opacity: 0.9; color: #3ddc97;">
+                {{ current_user.login }}
+            </span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+        </div>
+    </header>
+
+    <main class="account-hero">
+        <h1 class="account-title">Account Dashboard</h1>
+        <p class="account-subtitle">Select a section to view your history</p>
+
+        <div class="tools-grid">
+            <a href="{{ url_for('account_scan') }}" class="tool-card">
+                <div class="tool-icon">🛡️</div>
+                <h3 class="tool-title">Network Scanning</h3>
+                <p class="tool-desc">History of IP and domain scans</p>
+            </a>
+
+            <a href="{{ url_for('account_crypto') }}" class="tool-card">
+                <div class="tool-icon">🔐</div>
+                <h3 class="tool-title">Cryptography</h3>
+                <p class="tool-desc">Hashes, encryption, and comparisons</p>
+            </a>
+
+            <a href="{{ url_for('account_social') }}" class="tool-card">
+                <div class="tool-icon">🧠</div>
+                <h3 class="tool-title">Social Engineering</h3>
+                <p class="tool-desc">Attack scenarios and defenses</p>
+            </a>
+            <a href="{{ url_for('account_dirsearch') }}" class="tool-card">
+                <div class="tool-icon">📁</div>
+                <h3 class="tool-title">Dirsearch History</h3>
+                <p class="tool-desc">View your past directory scans</p>
+</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 CyberSec — Platform for learning and cybersecurity analysis</p>
+    </footer>
+
+</body>
+</html>

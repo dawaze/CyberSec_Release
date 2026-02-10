@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | Social Engineering History</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: radial-gradient(circle at top, #0e1a1f, #05090c);
+            color: #e6f1ff;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(61, 220, 151, 0.2);
+        }
+
+
+        .nav-buttons span {
+            margin-right: 20px;
+            color: #3ddc97;
+            font-weight: bold;
+        }
+
+        .history-hero { 
+            padding: 80px 40px; 
+            text-align: center; 
+        }
+        
+        .history-title { 
+            font-size: 42px; 
+            color: #3ddc97; 
+            margin-bottom: 10px; 
+        }
+        
+        .history-subtitle { 
+            font-size: 20px; 
+            opacity: 0.9; 
+            margin-bottom: 40px; 
+        }
+        
+        .history-section { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 0 40px 60px; 
+        }
+        
+        .test-card {
+            background: rgba(10, 15, 18, 0.75);
+            border: 1px solid rgba(61, 220, 151, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #3ddc97;
+        }
+
+        .test-date {
+            font-size: 18px;
+            color: #3ddc97;
+        }
+
+        .test-score {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3ddc97;
+        }
+
+        .result-summary {
+            padding: 15px;
+            background: rgba(61, 220, 151, 0.15);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid #3ddc97;
+        }
+
+        .result-summary:hover {
+            background: rgba(61, 220, 151, 0.25);
+        }
+
+        .result-summary strong {
+            color: #3ddc97;
+            font-size: 16px;
+        }
+
+        .answer-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-top: 15px;
+        }
+
+        .answer-details.show {
+            max-height: 1000px;
+        }
+
+        .answer-item {
+            margin: 10px 0;
+            padding: 12px;
+            background: rgba(61, 220, 151, 0.1);
+            border-left: 3px solid #3ddc97;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .answer-item.correct {
+            border-left-color: #3ddc97;
+            background: rgba(61, 220, 151, 0.15);
+        }
+
+        .answer-item.wrong {
+            border-left-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.15);
+        }
+
+        .icon {
+            font-size: 20px;
+            font-weight: bold;
+            min-width: 25px;
+        }
+
+        .icon.correct {
+            color: #3ddc97;
+        }
+
+        .icon.wrong {
+            color: #ff6b6b;
+        }
+
+        .delete-btn {
+            padding: 8px 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #e55a5a;
+        }
+
+        .no-history { 
+            text-align: center; 
+            font-size: 18px; 
+            opacity: 0.7; 
+            padding: 60px 0; 
+        }
+
+        .toggle-icon {
+            float: right;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-icon.rotated {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+    <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+        <div class="nav-buttons">
+            <span>{{ current_user.login }}</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+        </div>
+    </header>
+
+    <main class="history-hero">
+        <h1 class="history-title">Social Engineering History</h1>
+        <p class="history-subtitle">Your past test results</p>
+    </main>
+
+    <section class="history-section">
+        {% if social_history %}
+            {% for test in social_history %}
+            <div class="test-card">
+                <div class="test-header">
+                    <span class="test-date">{{ test.date }}</span>
+                    <span class="test-score">Score: {{ test.score }}/10</span>
+                    <form method="POST" style="display: inline;">
+                        <input type="hidden" name="delete_id" value="{{ test.id }}">
+                        <button type="submit" class="delete-btn" onclick="return confirm('Delete this test?')">Delete</button>
+                    </form>
+                </div>
+
+                <div class="result-summary" onclick="toggleDetails(this)">
+                    <strong>Result: {{ test.result }}</strong>
+                    <span class="toggle-icon">▼</span>
+                </div>
+
+                <div class="answer-details">
+                    {% set answers = test.answers_dict %}
+                    {% set correct_answers = test.correct_answers %}
+                    {% if answers %}
+                        <strong style="color: #3ddc97;">Detailed Answers:</strong><br><br>
+                        
+                        <div class="answer-item {% if answers.get('q1') == correct_answers.q1 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q1') == correct_answers.q1 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q1') == correct_answers.q1 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>1. Email from bank:</strong> {{ answers.get('q1', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q2') == correct_answers.q2 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q2') == correct_answers.q2 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q2') == correct_answers.q2 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>2. IT support call:</strong> {{ answers.get('q2', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q3') == correct_answers.q3 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q3') == correct_answers.q3 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q3') == correct_answers.q3 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>3. QR code:</strong> {{ answers.get('q3', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q4') == correct_answers.q4 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q4') == correct_answers.q4 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q4') == correct_answers.q4 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>4. Colleague request:</strong> {{ answers.get('q4', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q5') == correct_answers.q5 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q5') == correct_answers.q5 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q5') == correct_answers.q5 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>5. Found USB:</strong> {{ answers.get('q5', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q6') == correct_answers.q6 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q6') == correct_answers.q6 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q6') == correct_answers.q6 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>6. SMS package:</strong> {{ answers.get('q6', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q7') == correct_answers.q7 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q7') == correct_answers.q7 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q7') == correct_answers.q7 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>7. Microsoft call:</strong> {{ answers.get('q7', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q8') == correct_answers.q8 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q8') == correct_answers.q8 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q8') == correct_answers.q8 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>8. Prize email:</strong> {{ answers.get('q8', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q9') == correct_answers.q9 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q9') == correct_answers.q9 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q9') == correct_answers.q9 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>9. Friend money request:</strong> {{ answers.get('q9', 'N/A') }}</span>
+                        </div>
+
+                        <div class="answer-item {% if answers.get('q10') == correct_answers.q10 %}correct{% else %}wrong{% endif %}">
+                            <span class="icon {% if answers.get('q10') == correct_answers.q10 %}correct{% else %}wrong{% endif %}">
+                                {% if answers.get('q10') == correct_answers.q10 %}✓{% else %}✗{% endif %}
+                            </span>
+                            <span><strong>10. Job bank details:</strong> {{ answers.get('q10', 'N/A') }}</span>
+                        </div>
+
+                    {% else %}
+                        <p>No answer details available</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-history">No social engineering tests yet</p>
+        {% endif %}
+    </section>
+
+    <footer class="footer">
+        <p>© 2026 CyberSec — Platform for learning and cybersecurity analysis</p>
+    </footer>
+
+    <script>
+        function toggleDetails(element) {
+            const details = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+            
+            if (details.classList.contains('show')) {
+                details.classList.remove('show');
+                icon.classList.remove('rotated');
+            } else {
+                details.classList.add('show');
+                icon.classList.add('rotated');
+            }
+        }
+    </script>
+
+</body>
+</html>

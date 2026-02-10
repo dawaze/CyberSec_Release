@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | Admin Panel</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body { background: radial-gradient(circle at top, #0e1a1f, #05090c); color: #e6f1ff; min-height: 100vh; font-family: 'Arial', sans-serif; margin: 0; }
+
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(61, 220, 151, 0.2); }
+
+        .nav-buttons span { margin-right: 20px; color: #3ddc97; font-weight: bold; }
+
+        .admin-container { max-width: 1400px; margin: 40px auto; padding: 20px; }
+
+        .admin-title { font-size: 36px; color: #3ddc97; text-align: center; margin-bottom: 40px; }
+
+        .total-stats { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
+
+        .stat-card { background: rgba(0, 0, 0, 0.5); padding: 20px 30px; border-radius: 12px; border: 1px solid #3ddc97; text-align: center; min-width: 180px; }
+        
+        .stat-number { font-size: 32px; color: #3ddc97; font-weight: bold; }
+
+        table { width: 100%; border-collapse: collapse; background: rgba(10, 15, 18, 0.8); border: 1px solid #3ddc97; border-radius: 12px; overflow: hidden; }
+
+        th, td { padding: 14px; text-align: left; border-bottom: 1px solid rgba(61, 220, 151, 0.2); }
+
+        th { background: rgba(61, 220, 151, 0.2); color: #3ddc97; }
+
+        tr:hover { background: rgba(61, 220, 151, 0.1); }
+
+        .btn-delete { background: #ff6b6b; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+
+        .btn-delete:hover { background: #e55a5a; }
+        
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+        <div class="nav-buttons">
+            <span>{{ current_user.login }} (Admin)</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <h1 class="admin-title">Admin Panel</h1>
+
+        <div class="total-stats">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_users }}</div>
+                <div>Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_scans }}</div>
+                <div>Total Scans</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_crypto }}</div>
+                <div>Total Crypto Ops</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_social }}</div>
+                <div>Total Social Tests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_dirsearch }}</div>
+                <div>Total Dirsearch Tests</div>
+            </div>
+        </div>
+
+        <h2 style="color: #3ddc97; margin: 40px 0 20px;">Users & Their Activity</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Login</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Scans</th>
+                <th>Crypto</th>
+                <th>Social Tests</th>
+                <th>Actions</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.login }}</td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.scan_count }}</td>
+                <td>{{ user.crypto_count }}</td>
+                <td>{{ user.social_count }}</td>
+                <td>{{ user.dirsearch_count}}</td>
+                <td>
+                    <form action="{{ url_for('admin_delete_user', user_id=user.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn-delete" onclick="return confirm('Delete user {{ user.login }}?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+</html>

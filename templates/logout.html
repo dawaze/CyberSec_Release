@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>CyberSec | Logout </title>
+    <link rel="stylesheet" href="/static/auth.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+        
+        <h2> Are you sure to logout? </h2>
+        <p class="subtitle">Secure Access Panel</p>
+        <form method="post" action="/logout">
+            {{ form.hidden_tag() }}
+            <div class="field"> {{ form.submit() }}</div>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

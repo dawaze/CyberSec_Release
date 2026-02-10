@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | Network Scanning</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        a {
+            text-decoration: none;
+        }   
+        .scan-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .scan-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(61, 220, 151, 0.25);
+            border-radius: 14px;
+            padding: 40px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .scan-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .scan-title {
+            font-size: 32px;
+            color: #3ddc97;
+            margin-bottom: 10px;
+        }
+
+        .scan-subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .scan-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .scan-input {
+            padding: 14px 18px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(61, 220, 151, 0.4);
+            border-radius: 8px;
+            color: #e6f1ff;
+            outline: none;
+        }
+
+        .scan-input:focus {
+            border-color: #3ddc97;
+            box-shadow: 0 0 10px rgba(61, 220, 151, 0.3);
+        }
+
+        .scan-type {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .scan-type label {
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(61, 220, 151, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scan-type label:hover {
+            border-color: #3ddc97;
+            background: rgba(61, 220, 151, 0.1);
+        }
+
+        .scan-type input[type="radio"]:checked + div {
+            color: #3ddc97;
+            font-weight: bold;
+        }
+
+        .scan-type input[type="radio"] {
+            display: none;
+        }
+
+        .scan-description {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .scan-btn {
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #3ddc97;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .scan-btn:hover {
+            background: #2bbd7e;
+            transform: translateY(-2px);
+        }
+
+        .scan-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .terminal {
+            background: #0a0f12;
+            border: 1px solid #3ddc97;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #00ff9d;
+            white-space: pre-wrap;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .terminal-line {
+            margin-bottom: 4px;
+        }
+
+        .terminal-prompt {
+            color: #3ddc97;
+            font-weight: bold;
+        }
+
+        .terminal-output {
+            color: #e6f1ff;
+        }
+
+        .terminal-error {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+        <div class="nav-buttons">
+            {% if current_user.is_authenticated %}
+                <span style="margin-right: 20px; opacity: 0.9; color: #3ddc97;">
+                    {{ current_user.login }}
+                </span>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+            {% else %}
+                <a href="{{ url_for('reg') }}" class="btn btn-outline">Register</a>
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="scan-container">
+        <div class="scan-card">
+            <div class="scan-header">
+                <h1 class="scan-title">Network Scanning</h1>
+                <p class="scan-subtitle">Analyze IPs, domains and network devices</p>
+            </div>
+
+            <form class="scan-form" id="scan-form">
+                <input type="text" class="scan-input" id="target" placeholder="Enter IP or domain (e.g., scanme.nmap.org)" required>
+                
+                <div>
+                    <label style="color: #3ddc97; margin-bottom: 10px; display: block;">Scan Type:</label>
+                    <div class="scan-type">
+                        <label>
+                            <input type="radio" name="scan_type" value="quick" checked>
+                            <div>
+                                <div>Quick Scan</div>
+                                <div class="scan-description">Fast port scan (-T4 -F)</div>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="scan_type" value="standard">
+                            <div>
+                                <div>Standard Scan</div>
+                                <div class="scan-description">Version detection (-sV)</div>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="scan_type" value="intensive">
+                            <div>
+                                <div>Intensive Scan</div>
+                                <div class="scan-description">Detailed analysis (-A -T4)</div>
+                            </div>
+                        </label>
+                        <label>
+                            <input type="radio" name="scan_type" value="stealth">
+                            <div>
+                                <div>Stealth Scan</div>
+                                <div class="scan-description">Low detection (-sS -T2)</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="scan-btn" id="start-scan">Start Scan</button>
+            </form>
+
+            <div class="terminal" id="terminal-output">
+                <div class="terminal-line terminal-prompt">$ nmap [flags] [target]</div>
+                <div class="terminal-line">Ready to scan. Enter target and select scan type.</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 CyberSec — Platform for learning and cybersecurity analysis</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById('scan-form');
+        const targetInput = document.getElementById('target');
+        const startBtn = document.getElementById('start-scan');
+        const terminal = document.getElementById('terminal-output');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const target = targetInput.value.trim();
+            const scanType = document.querySelector('input[name="scan_type"]:checked').value;
+
+            if (!target) return;
+
+            startBtn.disabled = true;
+            startBtn.textContent = 'Scanning...';
+            terminal.innerHTML = '';
+
+            const flagsMap = {
+                'quick': '-T4 -F',
+                'standard': '-sV',
+                'intensive': '-A -T4',
+                'stealth': '-sS -T2'
+            };
+
+            appendLine(`$ nmap ${flagsMap[scanType]} ${target}`, 'terminal-prompt');
+            appendLine('Starting scan... (may take 30-180 seconds)', 'terminal-output');
+
+            try {
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ target: target, scan_type: scanType })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    appendLine(`Server error: ${err.error || response.statusText}`, 'terminal-error');
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    appendLine(`Error: ${data.error}`, 'terminal-error');
+                } else if (data.output) {
+                    const lines = data.output.split('\n');
+                    for (const line of lines) {
+                        if (line.trim()) {
+                            appendLine(line);
+                            await new Promise(r => setTimeout(r, 30));
+                        }
+                    }
+                    appendLine('Scan complete.', 'terminal-prompt');
+                }
+
+            } catch (err) {
+                appendLine(`Connection error: ${err.message}`, 'terminal-error');
+            } finally {
+                startBtn.disabled = false;
+                startBtn.textContent = 'Start Scan';
+            }
+        });
+
+        function appendLine(text, className = 'terminal-output') {
+            const line = document.createElement('div');
+            line.className = `terminal-line ${className}`;
+            line.textContent = text;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | Social Engineering Test</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: radial-gradient(circle at top, #0e1a1f, #05090c);
+            color: #e6f1ff;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(61, 220, 151, 0.2);
+        }
+
+
+        .nav-buttons span {
+            margin-right: 20px;
+            color: #3ddc97;
+            font-weight: bold;
+        }
+
+        .se-hero {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .se-title {
+            font-size: 44px;
+            color: #3ddc97;
+            margin-bottom: 12px;
+        }
+
+        .se-subtitle {
+            font-size: 20px;
+            opacity: 0.85;
+            margin-bottom: 40px;
+        }
+
+        .se-card {
+            background: rgba(10, 15, 18, 0.75);
+            border: 1px solid rgba(61, 220, 151, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
+        }
+
+        .quiz {
+            margin-top: 40px;
+        }
+
+        .quiz-question {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #3ddc97;
+            border-radius: 12px;
+        }
+
+        .quiz-question h3 {
+            margin-bottom: 16px;
+            color: #3ddc97;
+        }
+
+        .quiz-options label {
+            display: block;
+            padding: 12px;
+            margin: 8px 0;
+            background: #3ddc97;
+            color: black;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .quiz-options label:hover {
+            background: #2bbd7e;
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .save-btn {
+            margin-top: 40px;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #3ddc97, #2bbd7e);
+            color: black;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(61, 220, 151, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+        <div class="nav-buttons">
+            <span>{{ current_user.login }}</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+        </div>
+    </header>
+
+    <div class="se-hero">
+        <h1 class="se-title">Social Engineering</h1>
+        <p class="se-subtitle">Awareness Test (10 Questions)</p>
+    </div>
+
+    <div class="se-card">
+        <p style="font-size: 18px; line-height: 1.6; opacity: 0.9;">
+            Answer all questions and click "Save Results" at the bottom.
+        </p>
+
+        <form method="POST">
+            <div class="quiz">
+                <div class="quiz-question">
+                    <h3>1. Email from "bank support" asks to confirm login via link. What do you do?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="Click the link" required> Click the link</label>
+                        <label><input type="radio" name="q1" value="Ignore the email"> Ignore the email</label>
+                        <label><input type="radio" name="q1" value="Call the bank using official number"> Call the bank using official number</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>2. Caller from "IT support" asks for your password. Your action?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="Give them your password" required> Give them your password</label>
+                        <label><input type="radio" name="q2" value="Hang up and call IT yourself"> Hang up and call IT yourself</label>
+                        <label><input type="radio" name="q2" value="Ask for their employee ID"> Ask for their employee ID</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>3. QR code on poster says "Scan for free Wi-Fi". Your action?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q3" value="Scan it immediately" required> Scan it immediately</label>
+                        <label><input type="radio" name="q3" value="Ignore it"> Ignore it</label>
+                        <label><input type="radio" name="q3" value="Scan with QR scanner app first"> Scan with QR scanner app first</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>4. Colleague asks to send sensitive file because "system is down". Your response?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q4" value="Send it right away" required> Send it right away</label>
+                        <label><input type="radio" name="q4" value="Ask in person or via official channel"> Ask in person or via official channel</label>
+                        <label><input type="radio" name="q4" value="Send via encrypted link"> Send via encrypted link</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>5. You find USB labeled "Employee Salaries 2026". What do you do?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q5" value="Plug it in to check" required> Plug it in to check</label>
+                        <label><input type="radio" name="q5" value="Throw it away"> Throw it away</label>
+                        <label><input type="radio" name="q5" value="Give it to IT department"> Give it to IT department</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>6. SMS says "Your package is waiting — click to pay customs". Your action?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q6" value="Click the link" required> Click the link</label>
+                        <label><input type="radio" name="q6" value="Ignore and check official tracking"> Ignore and check official tracking</label>
+                        <label><input type="radio" name="q6" value="Reply to ask for details"> Reply to ask for details</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>7. Call from "Microsoft support" says your PC is infected. They want remote access. Your response?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q7" value="Allow remote access" required> Allow remote access</label>
+                        <label><input type="radio" name="q7" value="Hang up immediately"> Hang up immediately</label>
+                        <label><input type="radio" name="q7" value="Ask for their callback number"> Ask for their callback number</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>8. Email from "HR" says you won a prize — click to claim. What do you do?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q8" value="Click to claim" required> Click to claim</label>
+                        <label><input type="radio" name="q8" value="Ignore and report"> Ignore and report</label>
+                        <label><input type="radio" name="q8" value="Check with HR in person"> Check with HR in person</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>9. Friend on social media asks for money urgently. Your action?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q9" value="Send money" required> Send money</label>
+                        <label><input type="radio" name="q9" value="Contact them another way"> Contact them another way</label>
+                        <label><input type="radio" name="q9" value="Ask for proof"> Ask for proof</label>
+                    </div>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>10. Job offer email asks for bank details "for payroll". Your response?</h3>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q10" value="Provide details" required> Provide details</label>
+                        <label><input type="radio" name="q10" value="Never provide early"> Never provide early</label>
+                        <label><input type="radio" name="q10" value="Ask for company website"> Ask for company website</label>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 60px;">
+                <button type="submit" class="save-btn">Save Test Results</button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 CyberSec — Platform for learning and cybersecurity analysis</p>
+    </footer>
+
+</body>
+</html>

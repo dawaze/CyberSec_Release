@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | AI Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: radial-gradient(circle at top, #0e1a1f, #05090c);
+            color: #e6f1ff;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(61, 220, 151, 0.2);
+        }
+
+        .nav-buttons span {
+            margin-right: 20px;
+            color: #3ddc97;
+            font-weight: bold;
+        }
+
+        .ai-container {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .ai-title {
+            font-size: 48px;
+            color: #3ddc97;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px rgba(61, 220, 151, 0.4);
+        }
+
+        .ai-subtitle {
+            font-size: 20px;
+            opacity: 0.85;
+            margin-bottom: 50px;
+        }
+
+        .ai-card {
+            background: rgba(10, 15, 18, 0.75);
+            border: 1px solid rgba(61, 220, 151, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 140px;
+            padding: 16px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #3ddc97;
+            border-radius: 12px;
+            color: #e6f1ff;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn {
+            padding: 14px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3ddc97, #2bbd7e);
+            color: black;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(61, 220, 151, 0.4);
+        }
+
+        .response-box {
+            margin-top: 40px;
+            background: #0a0f12;
+            border: 1px solid #3ddc97;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            color: #00ff9d;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.6;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+        <div class="nav-buttons">
+            <span>{{ current_user.login }}</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+        </div>
+    </header>
+
+    <div class="ai-container">
+        <h1 class="ai-title">AI Assistant</h1>
+        <p class="ai-subtitle">Ask anything about cybersecurity, code, crypto, scans, social engineering, or anything else</p>
+
+        <div class="ai-card">
+            <form method="POST">
+                <textarea name="question" placeholder="Your question here... (English recommended)" required></textarea>
+                <button type="submit" class="submit-btn">Ask Groq AI</button>
+            </form>
+
+            {% if response %}
+                <div class="response-box">
+                    <strong>AI Response:</strong><br><br>
+                    {{ response | safe }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

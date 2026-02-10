@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec | Dirsearch</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            background: radial-gradient(circle at top, #0e1a1f, #05090c);
+            color: #e6f1ff;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(61, 220, 151, 0.2);
+        }
+
+        .nav-buttons span {
+            margin-right: 20px;
+            color: #3ddc97;
+            font-weight: bold;
+        }
+
+        .dir-hero {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .dir-title {
+            font-size: 44px;
+            color: #3ddc97;
+            margin-bottom: 12px;
+        }
+
+        .dir-subtitle {
+            font-size: 20px;
+            opacity: 0.85;
+            margin-bottom: 40px;
+        }
+
+        .dir-card {
+            background: rgba(10, 15, 18, 0.75);
+            border: 1px solid rgba(61, 220, 151, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #3ddc97;
+            border-radius: 10px;
+            color: #e6f1ff;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn {
+            padding: 14px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3ddc97, #2bbd7e);
+            color: black;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(61, 220, 151, 0.4);
+        }
+
+        .result-box {
+            margin-top: 40px;
+            background: #0a0f12;
+            border: 1px solid #3ddc97;
+            border-radius: 12px;
+            padding: 25px;
+            font-family: 'Courier New', monospace;
+            color: #00ff9d;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 600px;
+            overflow-y: auto;
+            line-height: 1.6;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .found-info {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #3ddc97;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="{{ url_for('index') }}" class="logo" style="color: white;">CYBERSEC</a>
+        <div class="nav-buttons">
+            <span>{{ current_user.login }}</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+        </div>
+    </header>
+
+    <div class="dir-hero">
+        <h1 class="dir-title">Dirsearch</h1>
+        <p class="dir-subtitle">Directory & file brute-forcing on test targets</p>
+    </div>
+
+    <div class="dir-card">
+        <form method="POST">
+            <input type="text" name="target" placeholder="Enter target (e.g. http://scanme.nmap.org)" value="{{ target }}" required>
+            <button type="submit" class="submit-btn">Start Dirsearch</button>
+        </form>
+
+        {% if found_count > 0 %}
+            <div class="found-info">
+                Found {{ found_count }} directories/files (200/301/302/403)
+            </div>
+        {% endif %}
+
+        {% if result %}
+            <div class="result-box">
+                <strong>Dirsearch Output:</strong><br><br>
+                {{ result | safe }}
+            </div>
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 CyberSec — Platform for learning and cybersecurity analysis</p>
+    </footer>
+
+</body>
+</html>
