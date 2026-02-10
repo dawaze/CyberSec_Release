@@ -25,7 +25,7 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 from forms import RegForm, LoginForm, CryptoForm
 
-from groq import Groqr
+from groq import Groq
 
 client = Groq(api_key=GROQ_API_KEY)
 def ask_groq(question):
