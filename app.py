@@ -356,7 +356,6 @@ def scan():
         if target not in ALLOWED_TARGETS:
             return jsonify({'error': 'Scan only allowed for whitelisted targets (e.g., scanme.nmap.org)'}), 403
         
-        # Определяем флаги в зависимости от типа сканирования
         scan_flags = {
             'quick': ['-T4', '-F'],
             'standard': ['-sV'],
