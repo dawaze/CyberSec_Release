@@ -5,3 +5,5 @@ werkzeug
 cryptography
 groq
 cryptography.fernet
+nmap 
+dirsearch
